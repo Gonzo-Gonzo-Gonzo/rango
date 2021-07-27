@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from rango import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.index, name='index'),##what are the first and last arguments?
     path('rango/',include ('rango.urls')),
     path('admin/', admin.site.urls),
-]
+] + static (settings.MEDIA_URL, document_roop=settings.MEDIA_ROOT)

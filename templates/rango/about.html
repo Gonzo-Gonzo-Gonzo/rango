@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Rango</title>
+    </head>
+
+    <body>
+        <h1>
+            Rango Says 
+        </h1>
+        <div>
+            here is the about page. <br />
+            <strong>This tutorial was put together by Gonzalo</strong><br />
+        </div>
+        <div>
+            <a href= "/rango/index/">Index</a><br />
+            <img src="{% MEDIA_URL cat.jpg%}"
+                alt= "Picture of a cat"/>
+        </div>
+    </body>
+</html>
