@@ -24,4 +24,4 @@ urlpatterns = [
     path('',views.index, name='index'),##what are the first and last arguments?
     path('rango/',include ('rango.urls')),
     path('admin/', admin.site.urls),
-] + static (settings.MEDIA_URL, document_roop=settings.MEDIA_ROOT)
+] + static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
