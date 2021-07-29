@@ -2,32 +2,26 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>{{category}}</title>
+        <title>Rango</title>
     </head>
 
     <body>
-        <h1>
-            Rango Says 
-        </h1>
         <div>
-            Hey there partner! <br />
-            <strong>{{ boldmessage }}</strong><br />
-        </div>
-        <div>
-        {% if category %}
+            {% if category %}
+            <h1>{{category.name}}</h1>
+            {% if pages %}
             <ul>
-                {% for page in category %}
-                    <li>{{page.name}}</li>
-                {% endfor %}
+                {% for page in pages %}
+                <li><a href="{{page.url}}">{{page.title}}</a></li>
+                {%endfor%}
             </ul>
-        {% else %} 
-            <strong>There are no categories present.</strong>
-        {% endif %}
+            {%else%}
+            <strong>No pages currently in category</strong> 
+            {% endif %}
+            {%else%}
+            The specified category doesn't exist.
+            {% endif %}
         </div>
-        <div>
-            <a href= "/rango/about">About</a><br />
-            <img src="{% static 'mascot1.jpg'%}"
-                alt= "Picture of Rango"/>
-        </div>
+       
     </body>
 </html>

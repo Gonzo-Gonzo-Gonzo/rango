@@ -28,7 +28,7 @@ def show_category (request,category_name_slug):
 
         context_dict ['category']= category
     except Category.DoesNotExist:
-        context_dict['category']-None
+        context_dict['category']=None
         context_dict['pages']=None
     
     return render(request, 'rango/category.html',context=context_dict)
