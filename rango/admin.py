@@ -6,7 +6,7 @@ class PageInLine (admin.TabularInline):
     extra = 3
 
 class CategoryAdmin (admin.ModelAdmin):
-    fields = ['name','views','likes']
+    fields = ['name','views','likes','slug']
     inlines = [PageInLine]
     list_display = ('name','views','likes')
 
