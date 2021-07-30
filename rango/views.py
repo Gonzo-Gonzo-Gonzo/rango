@@ -1,5 +1,5 @@
-
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login,logout
 from rango.forms import PageForm,UserProfileForm, UserForm
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -42,7 +42,7 @@ def show_category (request,category_name_slug):
     
     return render(request, 'rango/category.html',context=context_dict)
 
-
+@login_required
 def add_category (request):
     form = CategoryForm()
 
@@ -61,7 +61,7 @@ def add_category (request):
 
 
 
-
+@login_required
 def add_page (request, category_name_slug):
     try:
         category= Category.objects.get(slug=category_name_slug)
@@ -81,7 +81,7 @@ def add_page (request, category_name_slug):
                 page = form.save(commit=False)
                 page.category = category
                 page.views = 0
-                page.save()
+                page.save(commit=True)
         
                 return redirect(reverse('rango:show_category',kwards = {'category_name_slug':category_name_slug}))
         else :
@@ -140,6 +140,15 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return rende(request, 'rango/login.html')
+        return render(request, 'rango/login.html')
 
+
+def user_logout(request):
+    logout(request)
+
+    return redirect(reverse('rango:index'))
     
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
+
