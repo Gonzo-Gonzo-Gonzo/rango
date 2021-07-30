@@ -1,3 +1,4 @@
+import re
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login,logout
 from django.shortcuts import render, redirect
@@ -29,10 +30,11 @@ def index(request):
 
 def about(request):
 
-    if request.session.test_cookie_worked():
-        print("TEST COOKIE WORKED")
-        request.session.delete_test_cookie()
-    return render (request,'rango/about.html')
+    visitor_cookie_handler(request)
+    context_dict={}
+    context_dict['visits']=request.session['visits']
+
+    return render (request,'rango/about.html',context_dict)
 
 
 
@@ -165,7 +167,7 @@ def restricted(request):
 
 def visitor_cookie_handler(request):
     visits= int(get_server_side_cookie(request,'visits','1'))
-    last_visit_cookie = get_server_side_cookie(request,'last visit',str(datetime.now()))
+    last_visit_cookie = get_server_side_cookie(request,'last_visit',str(datetime.now()))
     last_visit_time=datetime.strptime(last_visit_cookie[:-7],'%Y-%m-%d %H:%M:%S')
 
     if (datetime.now() - last_visit_time).seconds>0:
