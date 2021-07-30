@@ -1,4 +1,8 @@
-from django.shortcuts import render
+
+
+from rango.forms import PageForm
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from rango.models import Category,Page
 
@@ -19,6 +23,8 @@ def index(request):
 def about(request):
     return render (request,'rango/about.html')
 
+
+
 def show_category (request,category_name_slug):
     context_dict = {}
     
@@ -36,16 +42,51 @@ def show_category (request,category_name_slug):
     
     return render(request, 'rango/category.html',context=context_dict)
 
-def add_category(request):
+
+def add_category (request):
     form = CategoryForm()
 
     if request.method == 'POST':
         form = CategoryForm(request.POST)
     
-        if form.is_valid():
+        if form. is_valid():
             form.save(commit=True)
-            return redirect ('/rango/')
+            return redirect('/rango/')
         else:
-            print(form.errors)
+            print (form.errors)
 
-    return render(request, 'rango/add_category.html', {'form': form})
+    return render (request, 'rango/add_category.html',{'form':form})
+
+
+
+
+
+
+def add_Page (request, category_name_slug):
+    try:
+        category= Category.objects.get(slug=category_name_slug)
+    except Category.DeosNotExist:
+        category=None
+
+    if category is None:
+        return redirect('/rango/')
+
+    form = PageForm ()
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)#categoryForm method? or is it a constructor?
+
+        if form.is_valid: 
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+        
+                return redirect(reverse('rango:show_category',kwards = {'category_name_slug':category_name_slug}))
+
+    context_dict = {'from':form,'category':category}
+    return render (request, 'rango/add_page.html',context=context_dict)
+
+
+

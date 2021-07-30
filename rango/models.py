@@ -13,7 +13,7 @@ class Category (models.Model):
         verbose_name_plural = 'categories'
 
     def __str__(self):
-        return self.name + str(self.likes) + str(self.views)
+        return self.name
 
 class Page(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
