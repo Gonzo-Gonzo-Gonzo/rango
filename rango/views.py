@@ -65,7 +65,7 @@ def add_category (request):
 def add_Page (request, category_name_slug):
     try:
         category= Category.objects.get(slug=category_name_slug)
-    except Category.DeosNotExist:
+    except Category.DoesNotExist:
         category=None
 
     if category is None:
@@ -74,7 +74,7 @@ def add_Page (request, category_name_slug):
     form = PageForm ()
 
     if request.method == 'POST':
-        form = CategoryForm(request.POST)#categoryForm method? or is it a constructor?
+        form = PageForm(request.POST)#categoryForm method? or is it a constructor?
 
         if form.is_valid: 
             if category:
@@ -84,7 +84,9 @@ def add_Page (request, category_name_slug):
                 page.save()
         
                 return redirect(reverse('rango:show_category',kwards = {'category_name_slug':category_name_slug}))
-
+        else :
+            print(form.errors)
+   
     context_dict = {'from':form,'category':category}
     return render (request, 'rango/add_page.html',context=context_dict)
 
